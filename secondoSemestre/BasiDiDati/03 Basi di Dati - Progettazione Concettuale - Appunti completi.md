@@ -239,6 +239,107 @@ Lettura: ogni Persona deve essere collegata a esattamente una Città; una Città
 | N:M | (..,N) - (..,N) | Studente - Esame/Frequenza - Corso |
 
 Il tipo 1:1, 1:N o N:M guarda soltanto i massimi. I minimi servono invece a capire se la partecipazione è obbligatoria o opzionale.
+> [!warning]- Spiegazione dettagliata per capire meglio
+>
+> Attenzione: ci sono **due notazioni diverse** che possono sembrare simili.
+>
+> Quando vedi una cardinalità scritta così:
+>
+> ```text
+> (0,1)
+> (1,1)
+> (0,N)
+> (1,N)
+> ```
+>
+> ogni coppia significa sempre:
+>
+> ```text
+> (minimo, massimo)
+> ```
+>
+> Quindi:
+>
+> - `(0,1)` → minimo `0`, massimo `1`
+> - `(1,1)` → minimo `1`, massimo `1`
+> - `(0,N)` → minimo `0`, massimo `N`
+> - `(1,N)` → minimo `1`, massimo `N`
+>
+> Il **minimo** indica se la partecipazione è obbligatoria oppure opzionale:
+>
+> - `0` → partecipazione opzionale
+> - `1` → partecipazione obbligatoria
+>
+> Il **massimo** indica invece quante volte al massimo un elemento può partecipare:
+>
+> - `1` → al massimo una volta
+> - `N` → più volte
+>
+> ---
+>
+> Quando invece diciamo che un'associazione è:
+>
+> ```text
+> 1:1
+> 1:N
+> N:M
+> ```
+>
+> quel `1` e quell'`N` **non sono minimo e massimo**.
+>
+> Rappresentano i **massimi delle cardinalità sui due lati dell'associazione**.
+>
+> ### Esempio
+>
+> ```text
+> Persona ---- Residenza ---- Città
+>
+> Persona (1,1)
+> Città   (0,N)
+> ```
+>
+> Per classificare l'associazione prendiamo solo il **secondo valore** delle due coppie:
+>
+> ```text
+> Persona → massimo 1
+> Città   → massimo N
+> ```
+>
+> quindi abbiamo:
+>
+> ```text
+> 1:N
+> ```
+>
+> I valori minimi ci dicono invece qualcosa in più:
+>
+> - `(1,1)` sulla Persona → ogni persona **deve** essere collegata a una città e al massimo a una;
+> - `(0,N)` sulla Città → una città può avere **zero, una o molte persone** collegate.
+>
+> Anche:
+>
+> ```text
+> (0,1) ---- (1,N)
+> ```
+>
+> è comunque una relazione `1:N`, perché i massimi sono ancora `1` e `N`.
+>
+> Ciò che cambia è l'**obbligatorietà** indicata dai minimi.
+>
+> ### Regola pratica
+>
+> ```text
+> (...,1) ---- (...,1)  → 1:1
+>
+> (...,1) ---- (...,N)  → 1:N
+>
+> (...,N) ---- (...,N)  → N:M
+> ```
+>
+> **In breve:**
+>
+> - i **massimi** classificano la relazione (`1:1`, `1:N`, `N:M`);
+> - i **minimi** indicano se la partecipazione è opzionale (`0`) oppure obbligatoria (`1`).
 
 > [!warning] ATTENZIONE - Errore tipico
 > Dire "1:N" non basta per conoscere tutto il vincolo. (0,1)-(1,N) e (1,1)-(0,N) sono entrambe 1:N, ma impongono obbligatorieta diverse.
@@ -287,18 +388,63 @@ la coppia (Universita, Matricola) identifica lo studente nel dominio complessivo
 > Una identificazione esterna è possibile solo attraverso un'associazione alla quale l'entità da identificare partecipa con cardinalità (1,1).
 
 Per un'associazione non serve normalmente un identificatore separato: una sua occorrenza e già determinata dalle occorrenze delle entità che collega.
-
-## 17. Generalizzazione e specializzazione
-
-Una generalizzazione collega un'entità padre E a una o più entità figlie E1, E2, ... che rappresentano casi particolari del padre. Il padre contiene le caratteristiche comuni; le figlie aggiungono caratteristiche specifiche.
-
-```text
-             DIPENDENTE
-          /      |       \
-     IMPIEGATO FUNZIONARIO DIRIGENTE
-```
-
-Ogni occorrenza di una figlia e anche un'occorrenza del padre. Le proprietà del padre sono significative per tutte le figlie e vengono ereditate.
+>[!example]- Studente ---- Iscrizione ---- UNIVERSITA'
+>```
+STUDENTE
+> - Matricola: 1234
+> ```
+> 
+> Potrebbe sembrare sufficiente. Ma immagina che la matricola `1234` possa esistere sia alla Sapienza sia a Tor Vergata.
+> 
+> Quindi:
+> 
+> ```
+> Matricola = 1234
+> ```
+> 
+> da sola non basta.
+> 
+> Devo sapere anche:
+> 
+> ```
+> Università = Sapienza
+> ```
+> 
+> Allora l’identificazione diventa:
+> 
+> ```
+> Studente = (Università, Matricola)
+> ```
+> 
+> Qui `Matricola` è un attributo dello Studente, ma per identificarlo completamente devo appoggiarmi anche all’entità esterna `Università`.
+> 
+> Quindi:
+> 
+> ```
+> STUDENTE ---- Iscrizione ---- UNIVERSITÀ
+>     |                            |
+>  Matricola                    Nome
+> ```
+> 
+> L’identificatore dello Studente è concettualmente:
+> 
+> ```
+> Matricola + Università
+> ```
+> 
+> Questo è un **identificatore esterno**.
+> 
+> ## 17. Generalizzazione e specializzazione
+> 
+> Una generalizzazione collega un'entità padre E a una o più entità figlie E1, E2, ... che rappresentano casi particolari del padre. Il padre contiene le caratteristiche comuni; le figlie aggiungono caratteristiche specifiche.
+> 
+> ```text
+>              DIPENDENTE
+>           /      |       \
+>      IMPIEGATO FUNZIONARIO DIRIGENTE
+> ```
+> 
+> Ogni occorrenza di una figlia e anche un'occorrenza del padre. Le proprietà del padre sono significative per tutte le figlie e vengono ereditate.
 
 ## 18. Ereditarietà
 
@@ -325,8 +471,10 @@ STUDENTE possiede anche CodiceFiscale, Nome ed Età per ereditarietà.
 | Esclusiva | Un padre può appartenere a più figlie insieme? | No: al massimo una. |
 | Sovrapposta | Un padre può appartenere a più figlie insieme? | Si. |
 
-Esempio Persona -> Studente, Lavoratore: può essere parziale perché esistono persone che non sono ne studenti ne lavoratori; può essere sovrapposta perché una persona può essere contemporaneamente studente e lavoratore.
+>[!example]- 
+Persona -> Studente, Lavoratore: può essere parziale perché esistono persone che non sono ne studenti ne lavoratori; può essere sovrapposta perché una persona può essere contemporaneamente studente e lavoratore.
 
+>[!example]- 
 Esempio Persona -> Uomo, Donna (nel modello binario semplificato delle slide): può essere considerata totale ed esclusiva secondo i requisiti assunti nell'esempio.
 
 ## 20. Sottoinsieme e gerarchie multiple

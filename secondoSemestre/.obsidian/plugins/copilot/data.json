@@ -363,7 +363,15 @@
   "agentMode": {
     "byok": {},
     "activeBackend": "opencode",
-    "backends": {},
+    "backends": {
+      "opencode": {
+        "defaultMode": "default",
+        "defaultModel": {
+          "baseModelId": "google/gemini-3.8-flash",
+          "effort": "high"
+        }
+      }
+    },
     "debugFullFrames": true,
     "notificationSound": true,
     "notificationSoundId": "piano",

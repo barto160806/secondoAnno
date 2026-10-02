@@ -24,3 +24,17 @@ tags:
 
 **ai**: **Error:** Internal error: Error from provider (Console): Upstream request failed: Endpoint is unavailable.
 [Timestamp: 2026/10/02 14:34:48]
+
+**user**: ciao
+[Timestamp: 2026/10/02 15:41:25]
+
+**ai**: 
+[Timestamp: 2026/10/02 15:41:25]
+
+**user**: ciao
+[Timestamp: 2026/10/02 15:41:42]
+
+**ai**: **Error:** Internal error: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.8-flash
+Please retry in 32.413534399s.
+[Timestamp: 2026/10/02 15:41:42]

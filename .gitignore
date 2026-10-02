@@ -1,0 +1,14 @@
+# Obsidian - sessione e cache volatile (mantiene plugin e configurazioni)
+**/.obsidian/workspace.json
+**/.obsidian/workspace-mobile.json
+**/.obsidian/cache/
+
+# Cache assistenti AI e cataloghi
+**/.copilot/
+**/.opencode/
+
+# File di sistema e temporanei
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.tmp
